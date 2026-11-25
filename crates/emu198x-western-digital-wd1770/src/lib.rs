@@ -163,6 +163,18 @@ impl Disk {
         self.tracks
     }
 
+    /// Number of sector slots on each track and side.
+    #[must_use]
+    pub fn sectors_per_track(&self) -> usize {
+        self.sectors_per_track
+    }
+
+    /// The lowest sector ID on each track and side.
+    #[must_use]
+    pub fn first_sector_id(&self) -> u8 {
+        self.first_sector_id
+    }
+
     /// Whether the image is read-only.
     #[must_use]
     pub fn is_write_protected(&self) -> bool {
@@ -888,6 +900,17 @@ fn id_field_crc(track: u8, side: u8, sector: u8, size_code: u8) -> u16 {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn disk_geometry_reports_configured_sector_count_and_base() {
+        // The backing bytes can be shorter or longer than the geometry.
+        for len in [511, 8 * 512 + 512] {
+            let disk = Disk::new(vec![0; len], 1, 1, 8, 512);
+            assert_eq!(disk.sectors_per_track(), 8);
+            assert_eq!(disk.first_sector_id(), 1);
+            assert_eq!(disk.with_first_sector_id(0xC1).first_sector_id(), 0xC1);
+        }
+    }
 
     const STATUS: u8 = 0;
     const TRACK: u8 = 1;
