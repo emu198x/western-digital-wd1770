@@ -7,8 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1]
+
 ### Added
 
+- `Disk::sectors_per_track` and `Disk::first_sector_id` expose the configured
+  sector geometry so a mounted disk can be exported with its original layout.
+
+## 0.1.0
+
+### Added
+
+- First release under the `emu198x-western-digital-wd1770` name. Until now the crate was
+  `western-digital-wd1770`, versioned with the Emu198x suite and unpublished.
 - `Wd1770::set_byte_cycles` paces the data phase. Taking a byte drops `DRQ`
   until the next one arrives, and `INTRQ` follows the two CRC bytes, so a host
   on an edge-triggered interrupt such as the BBC B+'s NMI sees every edge.
@@ -27,10 +38,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - The serialised state gains the byte time and the countdown to the next
   byte, so snapshots that hold a `Wd1770` change shape.
-
-## 0.1.0
-
-### Added
-
-- First release under the `emu198x-western-digital-wd1770` name. Until now the crate was
-  `western-digital-wd1770`, versioned with the Emu198x suite and unpublished.
